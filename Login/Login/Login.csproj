@@ -12,8 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+    <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Login.Commom\Login.Commom.csproj" />
     <ProjectReference Include="..\Login.Service\Login.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
