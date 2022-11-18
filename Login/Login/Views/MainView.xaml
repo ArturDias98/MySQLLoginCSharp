@@ -6,6 +6,8 @@
                  xmlns:local="clr-namespace:Login.Views"
                  xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                  xmlns:viewmodels="clr-namespace:Login.ViewModels"
+                 xmlns:viewmodelsuc="clr-namespace:Login.ViewModels.UserControls"
+                 xmlns:usercontrols="clr-namespace:Login.Views.UserControls"
                  d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
                  mc:Ignorable="d"
                  Title="Log"
@@ -13,18 +15,26 @@
                  Height="450"
                  Width="700"
                  ResizeMode="NoResize">
+    <mah:MetroWindow.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type viewmodelsuc:LoggerViewModel}"
+                          x:Key="Logger">
+                <usercontrols:LoggerView />
+            </DataTemplate>
+        </ResourceDictionary>
+    </mah:MetroWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
 
-        <StackPanel HorizontalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
             <ContentControl Name="ActiveItem"
                             Margin="10" />
-
-
         </StackPanel>
 
 
@@ -37,26 +47,14 @@
                     Margin="5"
                     Style="{StaticResource MahApps.Styles.Button.Flat}"
                     x:Name="BackClick" />
-            <DockPanel Visibility="{Binding ShowingUserInfo, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
-                <Button Content="Log in"
-                        HorizontalAlignment="Center"
-                        FontSize="18"
-                        Margin="5"
-                        x:Name="LogInClcik"
-                        Visibility="{Binding IsCreatingNewAccount, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
-                        Style="{StaticResource MahApps.Styles.Button.Flat}" />
 
-                <Button Style="{StaticResource MahApps.Styles.Button.Flat}"
-                        Content="Create new account"
-                        HorizontalAlignment="Right"
-                        FontSize="18"
-                        Margin="5"
-                        Visibility="{Binding IsCreatingNewAccount, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
-                        x:Name="NewAccountClick"
-                        Background="Transparent" />
-            </DockPanel>
 
         </DockPanel>
+
+        <ContentControl Grid.Row="2"
+                        ContentTemplate="{StaticResource ResourceKey=Logger}"
+                        Content="{Binding LoggerVM}" />
+
 
     </Grid>
 </mah:MetroWindow>

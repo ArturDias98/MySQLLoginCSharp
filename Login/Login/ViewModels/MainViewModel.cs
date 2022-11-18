@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Login.Commom.Models;
 using Login.ViewModels.UserControls;
 using System;
 using System.Collections.Generic;
@@ -10,56 +11,58 @@ namespace Login.ViewModels
 {
     public class MainViewModel : Conductor<object>.Collection.OneActive
     {
-        private bool _isCreatingNewAccount;
-        private bool _showingUserInfo;
-
+        private readonly LogInViewModel logInViewModel;
+        private readonly CreateAccountViewModel createAccountViewModel;
         public MainViewModel()
         {
+            LoggerVM = new LoggerViewModel();
 
+            logInViewModel = new LogInViewModel();
+            logInViewModel.OnCreateNewAccount += OnCreateNewAccount;
+            logInViewModel.OnLogIn += LogInClcik;
+
+            createAccountViewModel = new CreateAccountViewModel();
+            createAccountViewModel.OnCreateAccount += CreateAccountViewModel_OnCreateAccount;
+
+            Service.Service.OnServiceReport += Service_OnServiceReport;
+        }
+
+        private void Service_OnServiceReport(LoggerModel obj)
+        {
+            LoggerVM.Update(obj);
+        }
+
+        private async void CreateAccountViewModel_OnCreateAccount()
+        {
+            logInViewModel.Clear(); 
+            await ActivateItemAsync(logInViewModel);
+        }
+        private async void OnCreateNewAccount()
+        {
+            await ActivateItemAsync(createAccountViewModel);
+        }
+        private async void LogInClcik(DatabaseModel model)
+        {
+            await ActivateItemAsync(new UserInfoViewModel(model));
         }
 
         protected async override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            await ActivateItemAsync(new LogInViewModel());
+
+            await ActivateItemAsync(logInViewModel);
+
+            await Service.Service.OpenConnection();
         }
 
-        public async void NewAccountClick()
-        {
-            IsCreatingNewAccount = true;
-            await ActivateItemAsync(new CreateAccountViewModel());
-        }
+
         public async void BackClick()
         {
-            IsCreatingNewAccount = false;
-            ShowingUserInfo = false;
-            await ActivateItemAsync(new LogInViewModel());
+            await ActivateItemAsync(logInViewModel);
         }
 
-        public async void LogInClcik()
-        {
-            ShowingUserInfo = true;
-            await ActivateItemAsync(new UserInfoViewModel());
-        }
+        public LoggerViewModel LoggerVM { get; set; }
 
-        public bool IsCreatingNewAccount
-        {
-            get { return _isCreatingNewAccount; }
-            set
-            {
-                _isCreatingNewAccount = value;
-                NotifyOfPropertyChange(() => IsCreatingNewAccount);
-            }
-        }
-        public bool ShowingUserInfo
-        {
-            get { return _showingUserInfo; }
-            set
-            {
-                _showingUserInfo = value;
-                NotifyOfPropertyChange(() => ShowingUserInfo);
-            }
-        }
 
     }
 }

@@ -4,6 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Login.Views.UserControls"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:usercontrols="clr-namespace:Login.ViewModels.UserControls"
+             d:DataContext="{d:DesignInstance Type=usercontrols:CreateAccountViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -35,22 +39,30 @@
         <StackPanel>
             <DockPanel LastChildFill="False">
                 <TextBlock Text="User Name" />
-                <TextBox />
+                <TextBox Text="{Binding UserName}"/>
             </DockPanel>
             <DockPanel LastChildFill="False"
                        Margin="0,2,0,0">
                 <TextBlock Text="Email" />
-                <TextBox />
+                <TextBox Text="{Binding Email}"/>
             </DockPanel>
             <DockPanel LastChildFill="False"
                        Margin="0,2,0,0">
                 <TextBlock Text="Password" />
-                <PasswordBox Width="200" />
+                <PasswordBox Width="200" x:Name="passwordBox"/>
             </DockPanel>
             <Button Content="Save"
                     HorizontalAlignment="Right"
                     Style="{StaticResource MahApps.Styles.Button.Flat}"
-                    Margin="0,2,0,0" />
+                    Margin="0,2,0,0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="SaveAccount">
+                            <cal:Parameter Value="{Binding ElementName=passwordBox}" />
+                        </cal:ActionMessage>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
         </StackPanel>
     </GroupBox>
 

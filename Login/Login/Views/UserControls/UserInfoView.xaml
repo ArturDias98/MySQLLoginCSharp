@@ -41,11 +41,11 @@
             <StackPanel >
                 <DockPanel Margin="0,2,0,0">
                     <TextBlock Text="Name" />
-                    <TextBox />
+                    <TextBox Text="{Binding UserName}"/>
                 </DockPanel>
                 <DockPanel Margin="0,2,0,0">
                     <TextBlock Text="Email" />
-                    <TextBox />
+                    <TextBox Text="{Binding Email}"/>
                 </DockPanel>
                 <DockPanel Margin="0,2,0,0">
                     <TextBlock Text="Description" />
@@ -53,7 +53,8 @@
                              MaxLength="150"
                              TextWrapping="Wrap"
                              TextAlignment="Justify"
-                             VerticalContentAlignment="Top"/>
+                             VerticalContentAlignment="Top"
+                             Text="{Binding Profile}"/>
 
                 </DockPanel>
                 <Button Content="{Binding UserProfileBtn}"

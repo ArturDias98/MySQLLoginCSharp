@@ -4,6 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Login.Views.UserControls"
+             xmlns:usercontrols="clr-namespace:Login.ViewModels.UserControls"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:cal="http://www.caliburnproject.org"
+             d:DataContext="{d:DesignInstance Type=usercontrols:LogInViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -35,15 +39,41 @@
         <StackPanel>
             <DockPanel LastChildFill="False">
                 <TextBlock Text="Email" />
-                <TextBox />
+                <TextBox Text="{Binding Email}"/>
             </DockPanel>
             <DockPanel LastChildFill="False"
                        Margin="0,2,0,0">
                 <TextBlock Text="Password" />
                 <PasswordBox Width="200"
+                             x:Name="passwordBox"
                              HorizontalContentAlignment="Center" />
             </DockPanel>
 
+            <Button Style="{StaticResource MahApps.Styles.Button.Chromeless}"
+                    Content="Create new account"
+                    HorizontalAlignment="Right"
+                    FontSize="12"
+                    Margin="5"
+                    x:Name="NewAccountClick"
+                     />
+
+            <Button Content="Log in"
+                    HorizontalAlignment="Center"
+                    FontSize="18"
+                    Margin="5"
+                    
+                    Style="{StaticResource MahApps.Styles.Button.Flat}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="LogInClcik">
+                            <cal:Parameter Value="{Binding ElementName=passwordBox}" />
+                        </cal:ActionMessage>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+                
+           
         </StackPanel>
     </GroupBox>
     
